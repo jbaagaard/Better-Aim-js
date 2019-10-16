@@ -5,11 +5,8 @@ var gameOptions = {
         width: 600
     }
 };
-function createTargetDiv(type) {
-    if (type === void 0) { type = "target"; }
-    var target = document.createElement("div");
-    target.classList.add(type);
-    return target;
+function randomNumber(min, max) {
+    return (Math.random() * (max - min)) + min;
 }
 var Target = /** @class */ (function () {
     function Target(props) {
@@ -22,30 +19,62 @@ var Target = /** @class */ (function () {
         this.delay = 0;
         this.lifeTime = 10.0;
         this.locks = 0;
+        this.isClicked = false;
+        this.color = "#1759e8";
         this.options = props.options;
         this.size = props.size;
         this.delay = props.delay;
         this.lifeTime = props.lifeTime;
         this.locks = props.locks;
-        this.create();
     }
-    Target.prototype.create = function (context) {
+    Target.prototype.create = function () {
         var _this = this;
-        if (context === void 0) { context = this; }
+        this.startTime = 0; //datetime now
         this.div = document.createElement("div");
         this.div.classList.add("target");
+        this.div.style.height = this.size + "px";
+        this.div.style.width = this.size + "px";
         this.div.addEventListener('mousedown', function () { return _this.clicked(); });
-        UI.gameDiv.append(this.div);
+        if (this.options.position == "fixed") {
+            this.div.style.position = "absolute";
+            this.div.style.top = this.options.y + "px";
+            this.div.style.left = this.options.x + "px";
+        }
+        if (this.options.position == "random") {
+            this.div.style.position = "absolute";
+            this.div.style.top = randomNumber(parseInt(this.options.y), parseInt(this.options.y2)) + "px";
+            this.div.style.left = randomNumber(parseInt(this.options.x), parseInt(this.options.x2)) + "px";
+        }
+        if (this.locks > 0)
+            this.div.style.backgroundColor = "gray";
+        this.div.style.zIndex = 10000 - this.locks;
+        var div = this.div;
+        setTimeout(function () {
+            UI.gameDiv.append(div);
+        }, this.delay * 1000);
     };
     Target.prototype.kill = function (div) {
         if (div === void 0) { div = this.div; }
-        this.div.style.animation = 'explode 70ms forwards';
+        console.log(div);
+        div.style.animation = 'explode 70ms forwards';
         setTimeout(function () {
             UI.gameDiv.removeChild(div);
         }, 70);
     };
+    Target.prototype.updateLock = function () {
+        if (this.locks > 0) {
+            this.locks--;
+            if (this.locks == 0)
+                this.div.style.backgroundColor = this.color;
+        }
+    };
+    ;
     Target.prototype.clicked = function () {
+        if (this.isClicked || this.locks > 0)
+            return;
+        updateTargetLocks();
         this.kill();
+        this.isClicked = true;
     };
     return Target;
 }());
@@ -54,10 +83,36 @@ function initializeGame() {
     UI.gameDiv.style.width = String(gameOptions.gameSize.width + "px");
 }
 initializeGame();
-var targetlist = [
-    new Target({})
+var targetList = [
+    new Target({
+        options: {
+            position: "fixed",
+            x: 50,
+            y: 50
+        },
+        size: 50,
+        delay: 0,
+        lifeTIme: 3,
+        locks: 0
+    }),
+    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 1 }),
+    new Target({ options: { position: "fixed", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 5 }),
+    new Target({ options: { position: "fixed", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 3 }),
+    new Target({ options: { position: "fixed", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 1 }),
+    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 2 }),
+    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 3 }),
+    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 4 }),
+    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 5 })
 ];
+function updateTargetLocks() {
+    for (var i = 0; i < targetList.length; i++) {
+        targetList[i].updateLock();
+    }
+}
 function startGame() {
+    for (var i = 0; i < targetList.length; i++) {
+        targetList[i].create();
+    }
 }
 startGame();
 //# sourceMappingURL=main.js.map

@@ -8,12 +8,9 @@ let gameOptions = {
 
 };
 
-function createTargetDiv(type:string = "target") {
-    let target = document.createElement("div");
-    target.classList.add(type);
-    return target;
+function randomNumber(min,max) {
+    return (Math.random()*(max-min))+min;
 }
-
 
 class Target {
 
@@ -27,6 +24,10 @@ class Target {
     lifeTime: number = 10.0;
     locks: number = 0;
     div;
+    isClicked: boolean = false;
+    color: string = "#1759e8";
+    isDead = false;
+    startTime;
 
     constructor(props) {
         this.options = props.options;
@@ -34,31 +35,64 @@ class Target {
         this.delay = props.delay;
         this.lifeTime = props.lifeTime;
         this.locks = props.locks;
-        this.create();
     }
 
-    private create(context = this){
+    public create(){
+        this.startTime = 0; //datetime now
         this.div = document.createElement("div");
         this.div.classList.add("target");
+        this.div.style.height = this.size+"px";
+        this.div.style.width = this.size+"px";
         this.div.addEventListener('mousedown',() => this.clicked());
-        UI.gameDiv.append(this.div);
-        if(this.options.position === "fixed"){
-            //this.div.style.top = this.options.x;
+        if(this.options.position == "fixed"){
+            this.div.style.position = "absolute";
+            this.div.style.top = this.options.y + "px";
+            this.div.style.left = this.options.x + "px";
         }
+        if(this.options.position == "random"){
+            this.div.style.position = "absolute";
+            this.div.style.top = randomNumber(parseInt(this.options.y),parseInt(this.options.y2)) + "px";
+            this.div.style.left = randomNumber(parseInt(this.options.x),parseInt(this.options.x2)) + "px";
+        }
+
+        if(this.locks > 0)
+            this.div.style.backgroundColor = "gray";
+
+        this.div.style.zIndex = 10000 - this.locks;
+
+        let div = this.div;
+        setTimeout(function () {
+            UI.gameDiv.append(div);
+        },this.delay*1000);
+
+
+
     }
 
     public kill(div = this.div){
-        this.div.style.animation = 'explode 70ms forwards';
+        console.log(div);
+        div.style.animation = 'explode 70ms forwards';
         setTimeout(function () {
             UI.gameDiv.removeChild(div);
         }, 70);
-
     }
+
+    public updateLock(){
+        if(this.locks > 0){
+            this.locks--;
+            if(this.locks == 0)
+                this.div.style.backgroundColor = this.color;
+        }
+    };
 
     public clicked(){
-
+        if(this.isClicked || this.locks > 0)
+            return;
+        updateTargetLocks();
         this.kill();
+        this.isClicked = true;
     }
+
 }
 
 
@@ -69,17 +103,36 @@ function initializeGame() {
 initializeGame();
 
 
-let targetlist = [
+let targetList = [
     new Target({
+        options:{
+            position: "fixed",
+            x:50,
+            y:50
+        },
         size:50,
         delay:0,
         lifeTIme:3,
         locks:0
-    })
+    }),
+    new Target({options:{position: "random",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:1}),
+    new Target({options:{position: "fixed",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:5}),
+    new Target({options:{position: "fixed",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:3}),
+    new Target({options:{position: "fixed",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:1}),
+    new Target({options:{position: "random",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:2}),
+    new Target({options:{position: "random",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:3}),
+    new Target({options:{position: "random",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:4}),
+    new Target({options:{position: "random",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:5})
 ];
-function startGame() {
 
+function updateTargetLocks() {
+    for(let i = 0;i<targetList.length;i++){
+        targetList[i].updateLock();
+    }
 }
+function startGame() {
+    for(let i = 0;i<targetList.length;i++){
+        targetList[i].create();
+    }}
+
 startGame();
-
-

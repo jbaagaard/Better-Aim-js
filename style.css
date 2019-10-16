@@ -9,13 +9,13 @@ html,body,#wrapper{
 }
 
 #wrapper{
-    background-color: #111;
+    background-color: #20262e;
     position: relative;
 }
 
 #game-div{
     margin: auto;
-    background-color: #333;
+    background-color: #20262e;
     position: absolute;
     bottom:0;
     top: 0;
@@ -24,8 +24,6 @@ html,body,#wrapper{
 }
 
 .target{
-    width: 50px;
-    height: 50px;
     border-radius: 50%;
     background-color: #1759e8;
     position: absolute;
@@ -65,4 +63,45 @@ html,body,#wrapper{
         opacity: 0;
         transform: scale(2);
     }
+}
+
+#game-timer{
+    color: #111;
+    font-size: 50px;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+}
+#startgame-btn {
+
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #1759e8;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border: none;
+    transform: scale(2);
+    color: #fbfbfb;
+    font-weight: bold;
+    outline: none;
+    -webkit-box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.39);
+    text-align: center;
+    line-height: 45px;
+}
+
+#startgame-btn:before {
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    position: absolute;
+    content: ' ';
+    left: 15%;
+    top: 15%;
+    background-color: rgba(255, 255, 255, 0.1);
+
 }
