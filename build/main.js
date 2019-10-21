@@ -21,6 +21,7 @@ var Target = /** @class */ (function () {
         this.locks = 0;
         this.isClicked = false;
         this.color = "#1759e8";
+        this.isDead = false;
         this.options = props.options;
         this.size = props.size;
         this.delay = props.delay;
@@ -52,6 +53,9 @@ var Target = /** @class */ (function () {
         setTimeout(function () {
             UI.gameDiv.append(div);
         }, this.delay * 1000);
+        setTimeout((function () {
+            _this.kill();
+        }), (this.delay + this.lifeTime) * 1000);
     };
     Target.prototype.kill = function (div) {
         if (div === void 0) { div = this.div; }
@@ -93,16 +97,14 @@ var targetList = [
         size: 50,
         delay: 0,
         lifeTIme: 3,
-        locks: 0
+        locks: 0,
+        lifeTime: 10
     }),
-    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 1 }),
-    new Target({ options: { position: "fixed", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 5 }),
-    new Target({ options: { position: "fixed", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 3 }),
-    new Target({ options: { position: "fixed", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 1 }),
-    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 2 }),
-    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 3 }),
-    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 4 }),
-    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 5 })
+    new Target({ options: { position: "fixed", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 1, lifeTime: 10 }),
+    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 2, lifeTime: 10 }),
+    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 3, lifeTime: 10 }),
+    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 4, lifeTime: 10 }),
+    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 5, lifeTime: 10 })
 ];
 function updateTargetLocks() {
     for (var i = 0; i < targetList.length; i++) {

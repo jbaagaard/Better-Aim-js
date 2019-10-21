@@ -27,7 +27,7 @@ class Target {
     isClicked: boolean = false;
     color: string = "#1759e8";
     isDead = false;
-    startTime;
+    startTime = 0;
 
     constructor(props) {
         this.options = props.options;
@@ -65,12 +65,16 @@ class Target {
             UI.gameDiv.append(div);
         },this.delay*1000);
 
+        setTimeout((()=> {
+            this.kill();
+        }),(this.delay+this.lifeTime)*1000)
+
 
 
     }
 
     public kill(div = this.div){
-        console.log(div);
+        this.isDead = true;
         div.style.animation = 'explode 70ms forwards';
         setTimeout(function () {
             UI.gameDiv.removeChild(div);
@@ -113,17 +117,23 @@ let targetList = [
         size:50,
         delay:0,
         lifeTIme:3,
-        locks:0
+        locks:0,
+        lifeTime:10
     }),
-    new Target({options:{position: "random",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:1}),
-    new Target({options:{position: "fixed",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:5}),
-    new Target({options:{position: "fixed",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:3}),
-    new Target({options:{position: "fixed",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:1}),
-    new Target({options:{position: "random",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:2}),
-    new Target({options:{position: "random",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:3}),
-    new Target({options:{position: "random",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:4}),
-    new Target({options:{position: "random",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:5})
+    new Target({options:{position: "fixed",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:1,lifeTime:10}),
+    new Target({options:{position: "random",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:2,lifeTime:10}),
+    new Target({options:{position: "random",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:3,lifeTime:10}),
+    new Target({options:{position: "random",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:4,lifeTime:10}),
+    new Target({options:{position: "random",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:5,lifeTime:10})
 ];
+
+function aliveTargetExists(targetList) {
+    for(let i = 0;i<targetList.length;i++){
+        if(!targetList[i].isDead)
+            return true
+    }
+    return false
+}
 
 function updateTargetLocks() {
     for(let i = 0;i<targetList.length;i++){
@@ -134,5 +144,6 @@ function startGame() {
     for(let i = 0;i<targetList.length;i++){
         targetList[i].create();
     }}
+
 
 startGame();
