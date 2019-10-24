@@ -127,6 +127,31 @@ let targetList = [
     new Target({options:{position: "random",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:5,lifeTime:10})
 ];
 
+class gameController  {
+    targetList: any;
+
+
+    aliveTargetExists(targetList) {
+        for(let i = 0;i<targetList.length;i++){
+            if(!targetList[i].isDead)
+                return true
+        }
+        return false
+    }
+
+    updateTargetLocks(targetList) {
+        for(let i = 0;i<targetList.length;i++){
+            targetList[i].updateLock();
+        }targetList
+    }
+
+    startGame(targetList) {
+        for(let i = 0;i<targetList.length;i++){
+            targetList[i].create();
+        }}
+
+
+}
 function aliveTargetExists(targetList) {
     for(let i = 0;i<targetList.length;i++){
         if(!targetList[i].isDead)

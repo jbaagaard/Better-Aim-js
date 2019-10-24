@@ -22,6 +22,7 @@ var Target = /** @class */ (function () {
         this.isClicked = false;
         this.color = "#1759e8";
         this.isDead = false;
+        this.startTime = 0;
         this.options = props.options;
         this.size = props.size;
         this.delay = props.delay;
@@ -59,7 +60,7 @@ var Target = /** @class */ (function () {
     };
     Target.prototype.kill = function (div) {
         if (div === void 0) { div = this.div; }
-        console.log(div);
+        this.isDead = true;
         div.style.animation = 'explode 70ms forwards';
         setTimeout(function () {
             UI.gameDiv.removeChild(div);
@@ -106,6 +107,36 @@ var targetList = [
     new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 4, lifeTime: 10 }),
     new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 5, lifeTime: 10 })
 ];
+var gameController = /** @class */ (function () {
+    function gameController() {
+    }
+    gameController.prototype.aliveTargetExists = function (targetList) {
+        for (var i = 0; i < targetList.length; i++) {
+            if (!targetList[i].isDead)
+                return true;
+        }
+        return false;
+    };
+    gameController.prototype.updateTargetLocks = function (targetList) {
+        for (var i = 0; i < targetList.length; i++) {
+            targetList[i].updateLock();
+        }
+        targetList;
+    };
+    gameController.prototype.startGame = function (targetList) {
+        for (var i = 0; i < targetList.length; i++) {
+            targetList[i].create();
+        }
+    };
+    return gameController;
+}());
+function aliveTargetExists(targetList) {
+    for (var i = 0; i < targetList.length; i++) {
+        if (!targetList[i].isDead)
+            return true;
+    }
+    return false;
+}
 function updateTargetLocks() {
     for (var i = 0; i < targetList.length; i++) {
         targetList[i].updateLock();
