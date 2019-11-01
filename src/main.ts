@@ -68,9 +68,6 @@ class Target {
         setTimeout((()=> {
             this.kill();
         }),(this.delay+this.lifeTime)*1000)
-
-
-
     }
 
     public kill(div = this.div){
@@ -99,13 +96,11 @@ class Target {
 
 }
 
-
 function initializeGame() {
     UI.gameDiv.style.height = String(gameOptions.gameSize.height+"px");
     UI.gameDiv.style.width = String(gameOptions.gameSize.width+"px");
 }
 initializeGame();
-
 
 let targetList = [
     new Target({
@@ -127,9 +122,12 @@ let targetList = [
     new Target({options:{position: "random",x:0,x2:550,y:0,y2:350},size:50,delay:0,locks:5,lifeTime:10})
 ];
 
-class gameController  {
+class Game  {
     targetList: any;
 
+    constructor(inputTargetList){
+        targetList = inputTargetList;
+    }
 
     aliveTargetExists(targetList) {
         for(let i = 0;i<targetList.length;i++){
@@ -149,9 +147,8 @@ class gameController  {
         for(let i = 0;i<targetList.length;i++){
             targetList[i].create();
         }}
-
-
 }
+
 function aliveTargetExists(targetList) {
     for(let i = 0;i<targetList.length;i++){
         if(!targetList[i].isDead)
@@ -165,10 +162,24 @@ function updateTargetLocks() {
         targetList[i].updateLock();
     }
 }
+
 function startGame() {
     for(let i = 0;i<targetList.length;i++){
         targetList[i].create();
     }}
-
-
 startGame();
+
+function nodeParser(node) {
+    switch (node.type) {
+        case "target":
+            return new Target(node);
+        case "repeat":
+            console.log("repeat");
+        break;
+        default:
+            console.log("else");
+            break;
+
+    }
+    return []
+}

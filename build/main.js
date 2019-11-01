@@ -107,28 +107,29 @@ var targetList = [
     new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 4, lifeTime: 10 }),
     new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 5, lifeTime: 10 })
 ];
-var gameController = /** @class */ (function () {
-    function gameController() {
+var Game = /** @class */ (function () {
+    function Game(inputTargetList) {
+        targetList = inputTargetList;
     }
-    gameController.prototype.aliveTargetExists = function (targetList) {
+    Game.prototype.aliveTargetExists = function (targetList) {
         for (var i = 0; i < targetList.length; i++) {
             if (!targetList[i].isDead)
                 return true;
         }
         return false;
     };
-    gameController.prototype.updateTargetLocks = function (targetList) {
+    Game.prototype.updateTargetLocks = function (targetList) {
         for (var i = 0; i < targetList.length; i++) {
             targetList[i].updateLock();
         }
         targetList;
     };
-    gameController.prototype.startGame = function (targetList) {
+    Game.prototype.startGame = function (targetList) {
         for (var i = 0; i < targetList.length; i++) {
             targetList[i].create();
         }
     };
-    return gameController;
+    return Game;
 }());
 function aliveTargetExists(targetList) {
     for (var i = 0; i < targetList.length; i++) {
