@@ -172,7 +172,7 @@ startGame();
 function nodeParser(node) {
     switch (node.type) {
         case "target":
-            return new Target(node);
+            return new Target(node.props);
         case "repeat":
             console.log("repeat");
         break;
@@ -183,3 +183,5 @@ function nodeParser(node) {
     }
     return []
 }
+
+console.log(nodeParser({type:"target",props:{}}));

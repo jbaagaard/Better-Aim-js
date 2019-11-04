@@ -149,4 +149,18 @@ function startGame() {
     }
 }
 startGame();
+function nodeParser(node) {
+    switch (node.type) {
+        case "target":
+            return new Target(node.props);
+        case "repeat":
+            console.log("repeat");
+            break;
+        default:
+            console.log("else");
+            break;
+    }
+    return [];
+}
+console.log(nodeParser({ type: "target", props: {} }));
 //# sourceMappingURL=main.js.map
