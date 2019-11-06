@@ -169,10 +169,10 @@ function startGame() {
     }}
 startGame();
 
-function parser(n) {
+function sequenceParser(nodeArray) {
     let targetArray = [];
-    for(let i = 0;i<n.amount;i++)
-        targetArray.concat(nodeParser(n[i]));
+    for(let i = 0;i<nodeArray.amount;i++)
+        targetArray.concat(nodeParser(nodeArray[i]));
 return targetArray;
 }
 
@@ -187,11 +187,7 @@ function nodeParser(node) {
                 array.push(new Target(node.nodeArray[i]));
             return array;
         default:
-            console.log("else");
-            break;
-
+            return [{}];
     }
-    return []
 }
 
-console.log(nodeParser({type:"target",props:{}}));
