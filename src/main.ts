@@ -169,13 +169,23 @@ function startGame() {
     }}
 startGame();
 
+function parser(n) {
+    let targetArray = [];
+    for(let i = 0;i<n.amount;i++)
+        targetArray.concat(nodeParser(n[i]));
+return targetArray;
+}
+
 function nodeParser(node) {
     switch (node.type) {
         case "target":
-            return new Target(node.props);
+            return [new Target(node.props)];
         case "repeat":
             console.log("repeat");
-        break;
+            let array = [];
+            for (let i = 0 ;i < node.amount; i++)
+                array.push(new Target(node.nodeArray[i]));
+            return array;
         default:
             console.log("else");
             break;
