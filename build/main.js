@@ -1,3 +1,21 @@
+/*
+import * as pegparser from './parser.js';
+import { Parser } from "pegjs";
+const parser : Parser = pegparser.default;
+
+    let test = parser.parse("repeat 5 times\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n" +
+    "\n" +
+    "in parallel\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n");
+console.log(test);*/
 var UI = { gameDiv: document.getElementById("game-div") };
 var gameOptions = {
     gameSize: {
@@ -101,11 +119,41 @@ var targetList = [
         locks: 0,
         lifeTime: 10
     }),
-    new Target({ options: { position: "fixed", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 1, lifeTime: 10 }),
-    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 2, lifeTime: 10 }),
-    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 3, lifeTime: 10 }),
-    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 4, lifeTime: 10 }),
-    new Target({ options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 }, size: 50, delay: 0, locks: 5, lifeTime: 10 })
+    new Target({
+        options: { position: "fixed", x: 0, x2: 550, y: 0, y2: 350 },
+        size: 50,
+        delay: 0,
+        locks: 1,
+        lifeTime: 10
+    }),
+    new Target({
+        options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 },
+        size: 50,
+        delay: 0,
+        locks: 2,
+        lifeTime: 10
+    }),
+    new Target({
+        options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 },
+        size: 50,
+        delay: 0,
+        locks: 3,
+        lifeTime: 10
+    }),
+    new Target({
+        options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 },
+        size: 50,
+        delay: 0,
+        locks: 4,
+        lifeTime: 10
+    }),
+    new Target({
+        options: { position: "random", x: 0, x2: 550, y: 0, y2: 350 },
+        size: 50,
+        delay: 0,
+        locks: 5,
+        lifeTime: 10
+    })
 ];
 var Game = /** @class */ (function () {
     function Game(inputTargetList) {
@@ -149,18 +197,24 @@ function startGame() {
     }
 }
 startGame();
+function sequenceParser(nodeArray) {
+    var targetArray = [];
+    for (var i = 0; i < nodeArray.amount; i++)
+        targetArray.concat(nodeParser(nodeArray[i]));
+    return targetArray;
+}
 function nodeParser(node) {
     switch (node.type) {
         case "target":
-            return new Target(node.props);
+            return [new Target(node.props)];
         case "repeat":
             console.log("repeat");
-            break;
+            var array = [];
+            for (var i = 0; i < node.amount; i++)
+                array.push(new Target(node.children[i]));
+            return array;
         default:
-            console.log("else");
-            break;
+            return [{}];
     }
-    return [];
 }
-console.log(nodeParser({ type: "target", props: {} }));
 //# sourceMappingURL=main.js.map

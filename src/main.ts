@@ -1,3 +1,23 @@
+/*
+import * as pegparser from './parser.js';
+import { Parser } from "pegjs";
+const parser : Parser = pegparser.default;
+
+    /*let test = parser.parse("repeat 5 times\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n" +
+    "\n" +
+    "in parallel\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n" +
+    "  spawn bullseye with delay 200 at(50,50)\n");
+console.log(test);*/
+
+
 let UI = {gameDiv: document.getElementById("game-div")};
 
 let gameOptions = {
